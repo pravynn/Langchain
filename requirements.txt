@@ -1,1 +1,11 @@
-streamlit>=1.26.0
+streamlit
+langchain_openai
+langchain_core
+python-dotenv
+streamlit
+langchain_community
+langserve
+fastapi
+uvicorn
+sse_starlette
+
