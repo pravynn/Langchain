@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Fetch API keys from environment or default to hardcoded values (as fallback)
-OPENAI_API_KEY = os.getenv("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", "your_fallback_openai_key")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "your_fallback_openai_key")
 LANGCHAIN_API_KEY = os.getenv("sv2_pt_967390b44a504849bd2567ac167c812b_2a9aaaa1cb", "your_fallback_langchain_key")
 
 # Set the environment variables (double-check they aren't None)
