@@ -9,14 +9,16 @@ from dotenv import load_dotenv
 # Load environment variables from .env file
 load_dotenv()
 
+# Fetch API keys from environment or default to hardcoded values (as fallback)
+OPENAI_API_KEY = os.getenv("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", "your_fallback_openai_key")
+LANGCHAIN_API_KEY = os.getenv("sv2_pt_967390b44a504849bd2567ac167c812b_2a9aaaa1cb", "your_fallback_langchain_key")
 
-LANGCHAIN_API_KEY="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"
-OPENAI_API_KEY='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'
-LANGCHAIN_PROJECT="Chatbot"
-
-# Environment variable call
-os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
-os.environ["LANGCHAIN_API_KEY"] = os.getenv("LANGCHAIN_API_KEY")  # Update if different key
+# Set the environment variables (double-check they aren't None)
+if OPENAI_API_KEY and LANGCHAIN_API_KEY:
+    os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
+    os.environ["LANGCHAIN_API_KEY"] = LANGCHAIN_API_KEY
+else:
+    st.error("API keys not found. Make sure the .env file is properly configured.")
 
 # Langsmith tracking
 os.environ["LANGCHAIN_TRACING_V2"] = "true"
@@ -39,10 +41,13 @@ output_parser = StrOutputParser()
 
 # Chain call manually
 if input_text:
-    # Manually chain the steps
-    prompt_message = prompt.format_messages({"question": input_text})
-    response = llm(prompt_message)
-    output = output_parser.parse(response)
-    
-    # Display output in Streamlit
-    st.write(output)
+    try:
+        # Manually chain the steps
+        prompt_message = prompt.format_messages({"question": input_text})
+        response = llm(prompt_message)
+        output = output_parser.parse(response)
+        
+        # Display output in Streamlit
+        st.write(output)
+    except Exception as e:
+        st.error(f"An error occurred: {str(e)}")
